@@ -24,13 +24,13 @@ app.post('/', (req, res) => {
         }
     };
 
-    pdf.create(htmlContent, pdfOptions).toFile(path.join(__dirname, 'test.pdf'), (err, result) => {
+    pdf.create(htmlContent, pdfOptions).toBuffer((err, result) => {
         if (err) {
             console.error(err)
             return res.status(500).send({ error: 'Failed to generate PDF'+err });
         }   
         console.log("pdf created")
-        res.send({ filePath: result.filename });
+        res.send({ filePath: result });
     });
 });
 

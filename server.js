@@ -2,7 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const pdf = require("html-pdf");
 const path = require("path");
-const fs = require('fs')
+const fs = require("fs");
 const app = express();
 
 app.use(bodyParser.json());
@@ -564,12 +564,9 @@ app.post("/", (req, res) => {
                 '<div style="text-align:center">sales@iviewlabs.com  | www.iviewlabs.com | +91 98250 84654</div>',
         },
         childProcessOptions: {
-            env: {
-                OPENSSL_CONF: "/dev/null",
-            },
+            detached: true,
         },
         format: "A4",
-        
     };
 
     htmlSource = `
@@ -627,32 +624,39 @@ app.post("/", (req, res) => {
                 </body>
             </html>
     
-    `
-    let filename = name+"_"+Date.now()+".pdf"
-    pdf.create(htmlSource, pdfOptions).toFile("PDFs/"+filename,(err, result) => {
-        if (err) {
-            console.error(err);
-            return res
-                .status(500)
-                .send({ error: "Failed to generate PDF" + err });
+    `;
+    let filename = name + "_" + Date.now() + ".pdf";
+    pdf.create(htmlSource, pdfOptions).toFile(
+        "PDFs/" + filename,
+        (err, result) => {
+            if (err) {
+                console.error(err);
+                return res
+                    .status(500)
+                    .send({ error: "Failed to generate PDF" + err });
+            }
+            res.setHeader("Content-Type", "application/pdf");
+            res.send({
+                fileUrl: "https://" + req.hostname + "/download/" + filename,
+            });
         }
-        res.setHeader('Content-Type', 'application/pdf');
-        res.send({fileUrl:"https://"+req.hostname+"/download/"+filename});
-    });
+    );
 });
 
-app.get("/download/:filename", (req, res)=>{
+app.get("/download/:filename", (req, res) => {
     const filename = req.params.filename;
-    const filePath = path.join(__dirname, 'PDFs', filename);
-  
+    const filePath = path.join(__dirname, "PDFs", filename);
+
     fs.access(filePath, fs.constants.F_OK, (err) => {
-      if (err) {
-        return res.status(400).json({ message: "Requested CV does not exist" });
-      }
-  
-      res.sendFile(filePath);
+        if (err) {
+            return res
+                .status(400)
+                .json({ message: "Requested CV does not exist" });
+        }
+
+        res.sendFile(filePath);
     });
-})
+});
 
 app.listen(3000, () => {
     console.log(`Server is running at http://localhost:3000 ` + __dirname);

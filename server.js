@@ -564,6 +564,9 @@ app.post("/", (req, res) => {
                 '<div style="text-align:center">sales@iviewlabs.com  | www.iviewlabs.com | +91 98250 84654</div>',
         },
         childProcessOptions: {
+            env: {
+                OPENSSL_CONF: "/dev/null",
+            },
             detached: true,
         },
         format: "A4",

@@ -608,9 +608,6 @@ app.post("/", (req, res) => {
                     h4,p,li{
                         font-size: 12pt
                     }
-                    html {
-                        zoom: 0.55;
-                      }
                     </style>
                     </head>
                     <body>

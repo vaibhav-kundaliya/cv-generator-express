@@ -621,7 +621,7 @@ app.post("/", (req, res) => {
                         </div>
                     </div>
                     
-                    <div style="top: 20pt; margin-left:100px; margin-right:100px">
+                    <div style="top: 20pt; margin-left:80px; margin-right:80px">
                         ${content}
                     </div>
                 </body>

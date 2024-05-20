@@ -14,7 +14,7 @@ app.post("/", (req, res) => {
     const pdfOptions = {
         ...options,
         header: {
-            height: "100px",
+            height: "90px",
             contents: `<div style="height: 85px; padding-left:650px; padding-top:-50px">
             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
             width="100%" viewBox="0 0 5000 4471" enable-background="new 0 0 5000 4471" >
@@ -621,7 +621,7 @@ app.post("/", (req, res) => {
                         </div>
                     </div>
                     
-                    <div style="top: 20pt; margin-left:80px; margin-right:80px">
+                    <div style="top: 10pt; margin-left:80px; margin-right:80px">
                         ${content}
                     </div>
                 </body>

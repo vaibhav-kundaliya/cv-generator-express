@@ -609,7 +609,7 @@ app.post("/", (req, res) => {
                         font-size: 12pt
                     }
                     html {
-                        zoom: 0.90;
+                        zoom: 0.70;
                       }
                     </style>
                     </head>

@@ -15,7 +15,7 @@ app.post("/", (req, res) => {
         ...options,
         header: {
             height: "90px",
-            contents: `<div style="height: 85px; padding-left:650px; padding-top:-50px">
+            contents: `<div style="height: 85px; padding-left:680px; padding-top:-50px">
             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
             width="100%" viewBox="0 0 5000 4471" enable-background="new 0 0 5000 4471" >
        <path fill="#BB2821" opacity="1.000000" stroke="none" 
@@ -609,7 +609,7 @@ app.post("/", (req, res) => {
                         font-size: 12pt
                     }
                     html {
-                        zoom: 0.70;
+                        zoom: 0.75;
                       }
                     </style>
                     </head>

@@ -4,10 +4,18 @@ const pdf = require("html-pdf");
 const path = require("path");
 const fs = require("fs");
 const app = express();
+const cron = require('node-cron');
+require('dotenv').config();
+
+const PORT = process.env.PORT || 3000;
+const LINK_EXPIRE_TIME = process.env.LINK_EXPIRE_TIME || 30;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
+const PDF_DIR = path.join(__dirname, 'PDFs');
+if (!fs.existsSync(PDF_DIR)) {
+    fs.mkdirSync(PDF_DIR);
+}
 app.post("/", (req, res) => {
     const { header, footer, content, options, name, role } = req.body;
 
@@ -617,8 +625,6 @@ app.post("/", (req, res) => {
                     </style>
                     </head>
                     <body>
-                    <!-- HTML Content -->
-                    <div class="content" id="content">
                     <div class="main-title">
                             <h1>${name} - ${role}</h1>
                         </div>
@@ -651,7 +657,7 @@ app.post("/", (req, res) => {
 
 app.get("/download/:filename", (req, res) => {
     const filename = req.params.filename;
-    const filePath = path.join(__dirname, "PDFs", filename);
+    const filePath = path.join(PDF_DIR, filename);
 
     fs.access(filePath, fs.constants.F_OK, (err) => {
         if (err) {
@@ -664,6 +670,23 @@ app.get("/download/:filename", (req, res) => {
     });
 });
 
-app.listen(3000, () => {
-    console.log(`Server is running at http://localhost:3000 ` + __dirname);
+cron.schedule('* * * * *', () => {
+    const now = Date.now();
+    const files = fs.readdirSync(PDF_DIR);
+
+    files.forEach(file => {
+        const filePath = path.join(PDF_DIR, file);
+        const fileStat = fs.statSync(filePath);
+        const fileAgeInMinutes = (now - fileStat.mtimeMs) / 1000 / 60;
+
+        // Delete files older than 30 minutes
+        if (fileAgeInMinutes > 30) {
+            fs.unlinkSync(filePath);
+            console.log(`Deleted old PDF: ${file}`);
+        }
+    });
+});
+
+app.listen(PORT, () => {
+    console.log(`Server is running at http://localhost:${PORT}`);
 });

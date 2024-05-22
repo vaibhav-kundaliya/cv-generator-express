@@ -606,7 +606,8 @@ app.post("/", (req, res) => {
                         
                     }
                     h4,p,li{
-                        font-size: 12pt
+                        font-size: 12pt;
+                        line-height: 1.5;
                     }
                     html {
                         zoom: 0.75;
